@@ -4,12 +4,14 @@ const next = require('next');
 const fs = require('fs');
 const path = require('path');
 
+// Load from centralized backend .env first, then local .env.local
+require('dotenv').config({ path: '/app/backend-v13/.env' });
 require('dotenv').config({ path: '.env.local' });
 
-// Use development mode for now (production build has issues)
+// Use development mode for now (production build has issues with PostCSS)
 const dev = true;
-const hostname = process.env.HOSTNAME || 'trafficbuster.my.id';
-const port = parseInt(process.env.PORT || process.env.ADMIN_PANEL_PORT || '5353', 10);
+const hostname = process.env.HOSTNAME || process.env.DOMAIN || 'trafficbuster.my.id';
+const port = parseInt(process.env.ADMIN_PANEL_PORT || '5353', 10);
 
 // SSL Certificate paths (same as backend)
 const certPath = process.env.CERT_PATH || '/etc/letsencrypt/live/trafficbuster.my.id/fullchain.pem';
