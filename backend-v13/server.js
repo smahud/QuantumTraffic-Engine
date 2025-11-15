@@ -30,17 +30,21 @@ const START_TS = Date.now();
 const MAX_TRIES = 10;
 const SHUTDOWN_TIMEOUT_MS = 8000;
 
-const keyPath = path.join(__dirname, 'key.pem');
-const certPath = path.join(__dirname, 'cert.pem');
+// Load certificate paths from .env (support Let's Encrypt)
+const keyPath = process.env.KEY_PATH || process.env.SSL_KEY_PATH || path.join(__dirname, 'key.pem');
+const certPath = process.env.CERT_PATH || process.env.SSL_CERT_PATH || path.join(__dirname, 'cert.pem');
 
 let credentials;
 try {
   const privateKey = fs.readFileSync(keyPath, 'utf8');
   const certificate = fs.readFileSync(certPath, 'utf8');
   credentials = { key: privateKey, cert: certificate };
-  console.log('[startup] Loaded SSL certificate & key.');
+  console.log(`[startup] SSL certificate loaded from: ${certPath}`);
+  console.log(`[startup] SSL key loaded from: ${keyPath}`);
 } catch (err) {
-  console.error('FATAL: Unable to load key.pem / cert.pem. Ensure TLS files exist. Exiting.');
+  console.error(`FATAL: Unable to load SSL certificate from ${certPath} or key from ${keyPath}`);
+  console.error('Error:', err.message);
+  console.error('Please set CERT_PATH and KEY_PATH in .env or ensure cert.pem/key.pem exist.');
   process.exit(1);
 }
 
