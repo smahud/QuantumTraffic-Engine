@@ -158,13 +158,8 @@ function initializeWebSocket(httpsServer) {
   });
 }
 
-// ========== RUNNER WEBSOCKET INITIALIZATION (BARU) ==========
-function initializeRunnerWebSocket(httpsServer) {
-  runnerWSS = new WebSocketServer({ 
-    server: httpsServer,
-    path: '/ws/runner' // Path khusus untuk Runner connections
-  });
-  
+// ========== RUNNER WEBSOCKET HANDLERS (BARU) ==========
+function setupRunnerWebSocket() {
   console.log('[WSS-Runner] Runner WebSocket Server initialized on /ws/runner');
 
   runnerWSS.on('connection', async (ws, req) => {
