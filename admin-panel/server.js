@@ -6,8 +6,8 @@ const path = require('path');
 
 require('dotenv').config({ path: '.env.local' });
 
-// Always use production mode since we built the app
-const dev = false;
+// Use development mode for now (production build has issues)
+const dev = true;
 const hostname = process.env.HOSTNAME || 'trafficbuster.my.id';
 const port = parseInt(process.env.PORT || process.env.ADMIN_PANEL_PORT || '5353', 10);
 
