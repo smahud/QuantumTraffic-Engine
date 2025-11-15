@@ -6,8 +6,9 @@ const path = require('path');
 
 require('dotenv').config({ path: '.env.local' });
 
-const dev = process.env.NODE_ENV !== 'production';
-const hostname = process.env.HOSTNAME || 'localhost';
+// Always use production mode since we built the app
+const dev = false;
+const hostname = process.env.HOSTNAME || 'trafficbuster.my.id';
 const port = parseInt(process.env.PORT || process.env.ADMIN_PANEL_PORT || '5353', 10);
 
 // SSL Certificate paths (same as backend)
