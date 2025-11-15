@@ -42,14 +42,32 @@ function heartbeat() {
 
 function initializeWebSocket(httpsServer) {
   // ========== RUNNER WEBSOCKET SERVER (BARU) ==========
-  initializeRunnerWebSocket(httpsServer);
+  runnerWSS = new WebSocketServer({ noServer: true });
   
   // ========== USER WEBSOCKET SERVER (EXISTING) ==========
-  // Do NOT specify path - handle all WebSocket connections on root path
-  wss = new WebSocketServer({ 
-    server: httpsServer,
-    noServer: false
+  wss = new WebSocketServer({ noServer: true });
+  
+  // Handle upgrade event for path-based routing
+  httpsServer.on('upgrade', (request, socket, head) => {
+    const pathname = new URL(request.url, `wss://${request.headers.host}`).pathname;
+    
+    if (pathname === '/ws/runner') {
+      // Route to Runner WebSocket
+      runnerWSS.handleUpgrade(request, socket, head, (ws) => {
+        runnerWSS.emit('connection', ws, request);
+      });
+    } else {
+      // Route to User WebSocket (default for all other paths)
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+      });
+    }
   });
+  
+  // ========== SETUP RUNNER WEBSOCKET HANDLERS ==========
+  setupRunnerWebSocket();
+  
+  // ========== SETUP USER WEBSOCKET HANDLERS ==========
 
   wss.on('connection', async (ws, req) => {
     let token;
