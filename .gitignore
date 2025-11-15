@@ -80,3 +80,7 @@ agenthub/agents/youtube/db
 android-sdk/ admin-panel/node_modules/@next/swc-linux-x64-musl/next-swc.linux-x64-musl.node
 admin-panel/node_modules/@next/swc-linux-x64-gnu/next-swc.linux-x64-gnu.node
 admin-panel/node_modules/@next/swc-linux-x64-musl/next-swc.linux-x64-musl.node
+-e 
+# Environment files
+*.env
+*.env.*
