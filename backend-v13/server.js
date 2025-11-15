@@ -30,9 +30,17 @@ const START_TS = Date.now();
 const MAX_TRIES = 10;
 const SHUTDOWN_TIMEOUT_MS = 8000;
 
-// Load certificate paths from .env (support Let's Encrypt)
-const keyPath = process.env.KEY_PATH || process.env.SSL_KEY_PATH || path.join(__dirname, 'key.pem');
-const certPath = process.env.CERT_PATH || process.env.SSL_CERT_PATH || path.join(__dirname, 'cert.pem');
+// Load certificate paths from .env with fallback
+let keyPath = process.env.KEY_PATH || process.env.SSL_KEY_PATH;
+let certPath = process.env.CERT_PATH || process.env.SSL_CERT_PATH;
+
+// Check if primary certs exist, otherwise use fallback
+const fs = require('fs');
+if (!fs.existsSync(certPath) || !fs.existsSync(keyPath)) {
+  console.log('[startup] Primary certificates not found, using fallback...');
+  keyPath = process.env.FALLBACK_KEY_PATH || path.join(__dirname, 'key.pem');
+  certPath = process.env.FALLBACK_CERT_PATH || path.join(__dirname, 'cert.pem');
+}
 
 let credentials;
 try {
