@@ -330,9 +330,11 @@ function sendJobComplete(extraData = {}) {
 // ========== WEBSOCKET CONNECTION ==========
 
 function connectToBackend() {
-  const wsUrl = `ws://${BE_HOST}/ws/runner?apiKey=${encodeURIComponent(RUNNER_API_KEY)}`;
+  // Use wss:// for HTTPS backend
+  const protocol = BE_HOST.includes('443') || BE_HOST.includes('5252') ? 'wss' : 'ws';
+  const wsUrl = `${protocol}://${BE_HOST}/ws/runner?apiKey=${encodeURIComponent(RUNNER_API_KEY)}`;
   
-  log('info', `Connecting to Backend: ${BE_HOST}`);
+  log('info', `Connecting to Backend: ${protocol}://${BE_HOST}`);
   
   try {
     ws = new WebSocket(wsUrl);
