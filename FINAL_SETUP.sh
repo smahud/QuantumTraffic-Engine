@@ -49,11 +49,23 @@ fi
 # Install missing dependencies
 echo "Installing additional dependencies..."
 npm install dotenv https 2>/dev/null || true
-npm install -D tailwindcss@latest postcss@latest autoprefixer@latest 2>/dev/null || true
+
+# Install Tailwind CSS v3 (compatible with Next.js 14)
+echo "Installing Tailwind CSS v3..."
+npm uninstall tailwindcss 2>/dev/null || true
+npm install -D tailwindcss@3.4.1 postcss@8.4.35 autoprefixer@10.4.17
+
+# Clean old configs
+rm -f postcss.config.js tailwind.config.js
 
 # Clean build cache
 echo "Cleaning build cache..."
 rm -rf .next
+
+# Build admin panel
+echo "Building admin panel..."
+npm run build
+
 echo "✅ Admin panel ready"
 
 # ========================================
