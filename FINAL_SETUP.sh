@@ -47,7 +47,14 @@ else
 fi
 
 # Install missing dependencies
+echo "Installing additional dependencies..."
 npm install dotenv https 2>/dev/null || true
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest 2>/dev/null || true
+
+# Clean build cache
+echo "Cleaning build cache..."
+rm -rf .next
+echo "✅ Admin panel ready"
 
 # ========================================
 # STEP 3: Create Certificates if Missing
