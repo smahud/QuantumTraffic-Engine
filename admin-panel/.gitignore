@@ -1,0 +1,18 @@
+# Dependencies
+node_modules
+
+# Next.js
+.next
+out
+
+# Env
+.env
+.env.local
+.env.production
+
+# Misc
+*.log
+.DS_Store
+
+# Certificates
+*.pem
