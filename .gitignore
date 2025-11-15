@@ -92,3 +92,7 @@ admin-panel/node_modules/@next/swc-linux-x64-musl/next-swc.linux-x64-musl.node
 # Environment files
 *.env
 *.env.*
+-e 
+# Environment files
+*.env
+*.env.*
