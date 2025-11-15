@@ -131,7 +131,7 @@ if (-not (Test-Path ".env")) {
     $envContent = @"
 # Backend-Orchestrator Configuration
 BE_HOST=trafficbuster.my.id:5252
-RUNNER_API_KEY=default-runner-key-CHANGE-ME
+RUNNER_API_KEY=quantum-runner-secure-key-production-2025
 
 # Runner Configuration
 RUNNER_OS=windows
@@ -141,6 +141,9 @@ HEADLESS=true
 # Connection Settings (Optimized)
 RECONNECT_DELAY=5000
 HEARTBEAT_INTERVAL=30000
+
+# SSL Verification (set to false for self-signed certs)
+NODE_TLS_REJECT_UNAUTHORIZED=0
 "@
     Set-Content -Path ".env" -Value $envContent
     Write-Host "Created .env file with default configuration" -ForegroundColor Gray
