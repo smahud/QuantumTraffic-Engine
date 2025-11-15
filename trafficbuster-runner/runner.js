@@ -337,7 +337,12 @@ function connectToBackend() {
   log('info', `Connecting to Backend: ${protocol}://${BE_HOST}`);
   
   try {
-    ws = new WebSocket(wsUrl);
+    // WebSocket options for self-signed certificates
+    const wsOptions = {
+      rejectUnauthorized: process.env.NODE_TLS_REJECT_UNAUTHORIZED !== '0'
+    };
+    
+    ws = new WebSocket(wsUrl, wsOptions);
     
     ws.on('open', () => {
       log('info', '✅ Connected to Backend-Orchestrator');
