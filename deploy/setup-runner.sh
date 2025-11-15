@@ -150,9 +150,9 @@ echo ""
 echo "[6/6] Setting up configuration..."
 if [ ! -f .env ]; then
     cat > .env << EOF
-# Backend-Orchestrator Configuration  
+# Backend-Orchestrator Configuration
 BE_HOST=trafficbuster.my.id:5252
-RUNNER_API_KEY=default-runner-key-CHANGE-ME
+RUNNER_API_KEY=quantum-runner-secure-key-production-2025
 
 # Runner Configuration
 RUNNER_OS=linux
@@ -162,6 +162,9 @@ HEADLESS=true
 # Connection Settings (Optimized)
 RECONNECT_DELAY=5000
 HEARTBEAT_INTERVAL=30000
+
+# SSL Verification (set to false for self-signed certs)
+NODE_TLS_REJECT_UNAUTHORIZED=0
 
 # For headful mode on server without Desktop Environment, use Xvfb:
 # DISPLAY=:99
