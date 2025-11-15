@@ -45,9 +45,10 @@ function initializeWebSocket(httpsServer) {
   initializeRunnerWebSocket(httpsServer);
   
   // ========== USER WEBSOCKET SERVER (EXISTING) ==========
+  // Do NOT specify path - handle all WebSocket connections on root path
   wss = new WebSocketServer({ 
     server: httpsServer,
-    path: '/ws' // Explicit path untuk user connections
+    noServer: false
   });
 
   wss.on('connection', async (ws, req) => {
