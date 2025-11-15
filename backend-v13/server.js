@@ -35,7 +35,6 @@ let keyPath = process.env.KEY_PATH || process.env.SSL_KEY_PATH;
 let certPath = process.env.CERT_PATH || process.env.SSL_CERT_PATH;
 
 // Check if primary certs exist, otherwise use fallback
-const fs = require('fs');
 if (!fs.existsSync(certPath) || !fs.existsSync(keyPath)) {
   console.log('[startup] Primary certificates not found, using fallback...');
   keyPath = process.env.FALLBACK_KEY_PATH || path.join(__dirname, 'key.pem');
