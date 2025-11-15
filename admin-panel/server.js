@@ -13,9 +13,9 @@ const dev = true;
 const hostname = process.env.HOSTNAME || process.env.DOMAIN || 'trafficbuster.my.id';
 const port = parseInt(process.env.ADMIN_PANEL_PORT || '5353', 10);
 
-// SSL Certificate paths (same as backend)
-const certPath = process.env.CERT_PATH || '/etc/letsencrypt/live/trafficbuster.my.id/fullchain.pem';
-const keyPath = process.env.KEY_PATH || '/etc/letsencrypt/live/trafficbuster.my.id/privkey.pem';
+// SSL Certificate paths with fallback
+const certPath = process.env.CERT_PATH || process.env.FALLBACK_CERT_PATH || '/app/backend-v13/cert.pem';
+const keyPath = process.env.KEY_PATH || process.env.FALLBACK_KEY_PATH || '/app/backend-v13/key.pem';
 
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
