@@ -21,21 +21,32 @@ const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  // Load SSL certificates
+  // Load SSL certificates with fallback
   let httpsOptions;
+  let certPathUsed = certPath;
+  let keyPathUsed = keyPath;
+  
+  // Try primary certificates first
+  if (!fs.existsSync(certPath) || !fs.existsSync(keyPath)) {
+    console.log('[Admin Panel] Primary certificates not found, using fallback...');
+    certPathUsed = process.env.FALLBACK_CERT_PATH || '/app/backend-v13/cert.pem';
+    keyPathUsed = process.env.FALLBACK_KEY_PATH || '/app/backend-v13/key.pem';
+  }
+  
   try {
     httpsOptions = {
-      key: fs.readFileSync(keyPath),
-      cert: fs.readFileSync(certPath),
+      key: fs.readFileSync(keyPathUsed),
+      cert: fs.readFileSync(certPathUsed),
     };
     console.log(`[Admin Panel] SSL certificates loaded`);
-    console.log(`[Admin Panel] Cert: ${certPath}`);
-    console.log(`[Admin Panel] Key: ${keyPath}`);
+    console.log(`[Admin Panel] Cert: ${certPathUsed}`);
+    console.log(`[Admin Panel] Key: ${keyPathUsed}`);
   } catch (err) {
     console.error('FATAL: Unable to load SSL certificates for Admin Panel');
     console.error('Error:', err.message);
-    console.error(`Cert path: ${certPath}`);
-    console.error(`Key path: ${keyPath}`);
+    console.error(`Tried cert path: ${certPathUsed}`);
+    console.error(`Tried key path: ${keyPathUsed}`);
+    console.error('Please ensure certificates exist or run: sudo bash /app/FINAL_SETUP.sh');
     process.exit(1);
   }
 
